@@ -44,18 +44,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DataLayer&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "BusinessLogic",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PizzaOrdering: IIS Express">
     <configuration name="PizzaOrdering: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/PizzaOrdering.csproj" />
@@ -112,6 +112,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731426483101</updated>
       <workItem from="1731426485695" duration="2576000" />
+      <workItem from="1731430326531" duration="143000" />
     </task>
     <task id="LOCAL-00001" summary="Созданы модели базы данных">
       <option name="closed" value="true" />
@@ -129,7 +130,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731428441370</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Дежурный коммит">
+      <option name="closed" value="true" />
+      <created>1731430356532</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731430356532</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ещё какие-то изменения настроек проекта">
+      <option name="closed" value="true" />
+      <created>1731430411237</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731430411237</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,6 +158,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Созданы модели базы данных" />
     <MESSAGE value="Созданы сервисы и DTO для объектов базы данных" />
-    <option name="LAST_COMMIT_MESSAGE" value="Созданы сервисы и DTO для объектов базы данных" />
+    <MESSAGE value="Дежурный коммит" />
+    <MESSAGE value="Ещё какие-то изменения настроек проекта" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ещё какие-то изменения настроек проекта" />
   </component>
 </project>

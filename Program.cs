@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PizzaOrdering.DataLayer;
 using PizzaOrdering.DataLayer.Models;
+using PizzaOrdering.LogicLayer.Interfaces;
+using PizzaOrdering.LogicLayer.Services;
 
 namespace PizzaOrdering
 {
@@ -17,6 +19,8 @@ namespace PizzaOrdering
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<PizzeriaContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.AddRazorPages();
             
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
@@ -32,7 +36,16 @@ namespace PizzaOrdering
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            
+
+            builder.Services.AddScoped(typeof(ICRUDService<Ingredient>), typeof(IngredientService));
+            builder.Services.AddScoped(typeof(ICRUDService<Pizza>), typeof(PizzaService));
+            builder.Services.AddScoped(typeof(ICRUDService<Order>), typeof(OrderService));
+            builder.Services.AddScoped(typeof(ICRUDService<User>), typeof(UserService));
+            builder.Services.AddScoped(typeof(ICRUDService<RequiredIngredient>), typeof(RequiredIngredientService));
+            builder.Services.AddScoped(typeof(ICRUDService<PizzaRequired>), typeof(PizzaRequiredService));
+            builder.Services.AddScoped(typeof(IAccountService<User>), typeof(AccountService));
+            builder.Services.AddScoped(typeof(IRoleService<IdentityRole>), typeof(RoleService));
+
             var app = builder.Build();
 
             app.UseAuthentication();

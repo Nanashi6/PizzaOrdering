@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using PizzaOrdering.DataLayer.Interfaces;
+using PizzaOrdering.Models;
 
 namespace PizzaOrdering.DataLayer.Models;
 
@@ -27,10 +28,10 @@ public class Order : ITable
     [JsonIgnore] 
     public virtual User? User { get; set; }
 
-    // public void Update(CreateOrderDto orderDto)
-    // {
-    //     OrderDate = orderDto.OrderDate;
-    //     DeliveryDate = orderDto.DeliveryDate;
-    //     Address = orderDto.Address;
-    // }
+    public void Update(CreateOrderViewModel orderDto)
+    {
+        OrderDate = orderDto.OrderDate;
+        DeliveryDate = orderDto.DeliveryDate;
+        Address = orderDto.Address;
+    }
 }

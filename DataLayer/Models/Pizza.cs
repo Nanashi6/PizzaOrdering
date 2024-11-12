@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using PizzaOrdering.DataLayer.Interfaces;
+using PizzaOrdering.Models;
 
 namespace PizzaOrdering.DataLayer.Models;
 
@@ -18,10 +19,10 @@ public class Pizza : ITable
     [JsonIgnore]
     public virtual IEnumerable<RequiredIngredient>? RequiredIngredients { get; set; }
 
-    // public void Update(CreatePizzaDto pizzaDto)
-    // {
-    //     Name = pizzaDto.Name;
-    //     Size = pizzaDto.Size;
-    //     Price = pizzaDto.Price;
-    // }
+    public void Update(CreatePizzaViewModel pizzaDto)
+    {
+        Name = pizzaDto.Name;
+        Size = pizzaDto.Size;
+        Price = pizzaDto.Price;
+    }
 }
