@@ -1,83 +1,75 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PizzaOrdering.DataLayer.Models;
+using PizzaOrdering.LogicLayer.Interfaces;
 
 namespace PizzaOrdering.Controllers
 {
     public class UsersController : Controller
     {
-        // GET: UsersController
-        public ActionResult Index()
+        private ICRUDService<User> _userService;
+
+        public UsersController(ICRUDService<User> userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> Get(int? id)
+        {
+            if (id < 1 || id is null) return BadRequest();
+
+            User user = _userService.Read(id);
+        
+            if (user is null) return NotFound();
+        
+            return View(user);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Index()
+        {
+            return View(_userService.ReadAll());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             return View();
         }
-
-        // GET: UsersController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsersController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(User? user)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (user is null) return BadRequest();
+
+            _userService.Create(user);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: UsersController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public async Task<IActionResult> Update(int? id)
         {
-            return View();
+            if (id < 1 || id is null) return BadRequest();
+            User user = _userService.Read(id);
+            
+            return View(user);
+        }
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update(User? user)
+        {
+            if (user is null) return BadRequest();
+        
+            _userService.Update(user);
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: UsersController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> Delete(int? id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (id < 1 || id is null) return BadRequest();
+        
+            _userService.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

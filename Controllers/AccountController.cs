@@ -1,83 +1,91 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PizzaOrdering.DataLayer;
+using PizzaOrdering.DataLayer.Models;
+using PizzaOrdering.LogicLayer.Interfaces;
+using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: AccountController
-        public ActionResult Index()
+        private readonly PizzeriaContext _context;
+        private readonly UserManager<User?> _userManager;
+        private readonly SignInManager<User?> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AccountController(PizzeriaContext context, UserManager<User?> userManager, SignInManager<User?> signInManager, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public async Task<IActionResult> Login()
         {
             return View();
         }
-
-        // GET: AccountController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: AccountController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AccountController/Create
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            try
+            User? user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index), "Home");
+                }
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(model);
         }
 
-        // GET: AccountController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Register()
         {
             return View();
         }
-
-        // POST: AccountController/Edit/5
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                User? user = new User()
+                {
+                    Email = model.Email,
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    UserName = model.Email
+                };
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                _context.SaveChanges();
+        
+                if (result.Succeeded)
+                {
+                    user = await _userManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        await _userManager.AddToRoleAsync(user,  "User");
+                        await _signInManager.SignInAsync(user, false);
+                        return RedirectToAction(nameof(Index), "Home");   // TODO: ТЕПАТЬ ЧЕЛА НА ПРЕДЫДУЩУЮ СТРАНИЦУ
+                    }
+                }   
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
-
-        // GET: AccountController/Delete/5
-        public ActionResult Delete(int id)
+        
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Index));
         }
-
-        // POST: AccountController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        
+        public async Task<IActionResult> GetUserInfo()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View(_userManager.GetUserAsync(_httpContextAccessor.HttpContext.User));
         }
     }
 }

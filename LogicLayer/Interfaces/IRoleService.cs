@@ -7,6 +7,7 @@ namespace PizzaOrdering.LogicLayer.Interfaces;
 public interface IRoleService<TRole> where TRole : IdentityRole
 {
     Task<IEnumerable<TRole>> ReadAll();
+    Task<TRole> Read(string id);
     Task<IActionResult> Create(RoleViewModel role);
     Task<IActionResult> Update(RoleViewModel role);
     Task<IActionResult> Delete(RoleViewModel role);

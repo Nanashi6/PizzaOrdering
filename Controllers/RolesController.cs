@@ -1,83 +1,58 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PizzaOrdering.LogicLayer.Interfaces;
+using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
     public class RolesController : Controller
     {
-        // GET: RolesController
-        public ActionResult Index()
+        private readonly IRoleService<IdentityRole> _roleService;
+
+        public RolesController(IRoleService<IdentityRole> roleService)
+        {
+            _roleService = roleService;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<IdentityRole>> Index()
+        {
+            return View(_roleService.ReadAll());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             return View();
         }
-
-        // GET: RolesController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost("[action]")]
+        public async Task<ActionResult> Create(RoleViewModel model)
         {
-            return View();
+            await _roleService.Create(model);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: RolesController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
         {
-            return View();
+            if (id == null) return BadRequest();
+            IdentityRole role = await _roleService.Read(id);
+            
+            return View(role);
+        }
+        [HttpPut("[action]")]
+        public async Task<ActionResult> Update(RoleViewModel model)
+        {
+            await _roleService.Update(model);
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: RolesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> Delete(RoleViewModel model)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RolesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: RolesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RolesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: RolesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _roleService.Delete(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

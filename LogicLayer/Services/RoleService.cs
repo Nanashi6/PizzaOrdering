@@ -19,6 +19,11 @@ public class RoleService : IRoleService<IdentityRole>
         return _roleManager.Roles;
     }
 
+    public async Task<IdentityRole> Read(string id)
+    {
+        return await _roleManager.FindByIdAsync(id);
+    }
+
     public async Task<IActionResult> Create(RoleViewModel role)
     {
         IdentityRole newRole = new IdentityRole(role.Name);

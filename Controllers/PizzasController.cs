@@ -7,151 +7,160 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaOrdering.DataLayer;
 using PizzaOrdering.DataLayer.Models;
+using PizzaOrdering.LogicLayer.Interfaces;
+using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
     public class PizzasController : Controller
     {
-        private readonly PizzeriaContext _context;
-
-        public PizzasController(PizzeriaContext context)
+        private ICRUDService<Pizza> _pizzaService;
+        private readonly ICRUDService<RequiredIngredient> _requiredIngredientService;
+        
+        public PizzasController(ICRUDService<Pizza> pizzaService, ICRUDService<RequiredIngredient> requiredIngredientService)
         {
-            _context = context;
+            _pizzaService = pizzaService;
+            _requiredIngredientService = requiredIngredientService;
         }
 
-        // GET: Pizzas
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> Get(int? id)
+        {
+            if (id < 1 || id is null) return BadRequest();
+
+            Pizza pizza = _pizzaService.Read(id);
+            
+            if (pizza is null) return NotFound();
+            
+            PizzaInfoViewModel resultPizzaDto = new PizzaInfoViewModel()
+            {
+                Id = pizza.Id,
+                Name = pizza.Name,
+                Size = pizza.Size,
+                Price = pizza.Price,
+                Ingredients = pizza.RequiredIngredients.Select(e => e.Ingredient)
+            };
+            
+            return View(resultPizzaDto);
+        }
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pizzas.ToListAsync());
+            IEnumerable<Pizza> pizzas = _pizzaService.ReadAll();
+            
+            IEnumerable<PizzaInfoViewModel> pizzaInfoDtos = pizzas.Select(pizza => new PizzaInfoViewModel()
+            {
+                Id = pizza.Id,
+                Name = pizza.Name,
+                Size = pizza.Size,
+                Price = pizza.Price,
+                Ingredients = pizza.RequiredIngredients.Select(ri => ri.Ingredient)
+            });
+            
+            return View(pizzaInfoDtos);
         }
 
-        // GET: Pizzas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Filter(double? maxPrice = null, double minPrice = 0, int? size = null/*, IEnumerable<int> ingredientIds = null*/)
         {
-            if (id == null)
+            IEnumerable<Pizza> pizzas = _pizzaService.ReadAll().Where(p => p.Price >= minPrice);
+            if (maxPrice is not null) pizzas = pizzas.Where(p => p.Price <= maxPrice);
+            if (size is not null) pizzas = pizzas.Where(p => p.Size == size);
+            // if (ingredientIds is not null)
+            //     pizzas = pizzas.Where(pizza => pizza.RequiredIngredients.All(ri => ingredientIds.Contains(ri.Ingredient.Id)));
+            
+            IEnumerable<PizzaInfoViewModel> pizzaInfoDtos = pizzas.Select(pizza => new PizzaInfoViewModel()
             {
-                return NotFound();
-            }
-
-            var pizza = await _context.Pizzas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-
-            return View(pizza);
+                Id = pizza.Id,
+                Name = pizza.Name,
+                Size = pizza.Size,
+                Price = pizza.Price,
+                Ingredients = pizza.RequiredIngredients.Select(ri => ri.Ingredient)
+            });
+            
+            return View(pizzaInfoDtos);
         }
 
-        // GET: Pizzas/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             return View();
         }
-
-        // POST: Pizzas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Size,Price")] Pizza pizza)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Create(CreatePizzaViewModel? pizza)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(pizza);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pizza);
-        }
+            if (pizza is null) return BadRequest();
 
-        // GET: Pizzas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            Pizza newPizza = new Pizza()
             {
-                return NotFound();
-            }
-
-            var pizza = await _context.Pizzas.FindAsync(id);
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-            return View(pizza);
-        }
-
-        // POST: Pizzas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Size,Price")] Pizza pizza)
-        {
-            if (id != pizza.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                Name = pizza.Name,
+                Price = pizza.Price,
+                Size = pizza.Size,
+            };
+            _pizzaService.Create(newPizza);
+            
+            IEnumerable<RequiredIngredient> requiredIngredients = pizza.
+                IngredientIds.Select(ingredientId => new RequiredIngredient
                 {
-                    _context.Update(pizza);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PizzaExists(pizza.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    PizzaId = newPizza.Id,
+                    IngredientId = ingredientId
+                });
+
+            CreateRequiredIngredientsAsync(requiredIngredients);
+            
+            return RedirectToAction(nameof(Index));
+        }
+        
+        [NonAction]
+        private async Task CreateRequiredIngredientsAsync(IEnumerable<RequiredIngredient> requiredIngredients)
+        {
+            foreach (var requiredIngredient in requiredIngredients)
+            {
+                _requiredIngredientService.Create(requiredIngredient);
             }
-            return View(pizza);
         }
 
-        // GET: Pizzas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Update(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var pizza = await _context.Pizzas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-
+            if (id < 1 || id is null) return BadRequest();
+            Pizza pizza = _pizzaService.Read(id);
+            
             return View(pizza);
         }
-
-        // POST: Pizzas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update(CreatePizzaViewModel? pizzaDto)
         {
-            var pizza = await _context.Pizzas.FindAsync(id);
-            if (pizza != null)
-            {
-                _context.Pizzas.Remove(pizza);
-            }
+            if (pizzaDto is null) return BadRequest();
+            Pizza pizza = _pizzaService.Read(pizzaDto.Id);
+            if (pizza is null) return NotFound("Pizza not found");
+            
+            IEnumerable<int> exceptsIngredientsIds = 
+                pizza.RequiredIngredients.Select(ri => ri.Ingredient.Id).Except(pizzaDto.IngredientIds);
+            IEnumerable<int> newIngredientsIds =
+                pizzaDto.IngredientIds.Except(pizza.RequiredIngredients.Select(ri => ri.Ingredient.Id));
+            
+            foreach (int existingIngredientId in exceptsIngredientsIds)
+                _requiredIngredientService.Delete(existingIngredientId);
 
-            await _context.SaveChangesAsync();
+            foreach (int newIngredientId in newIngredientsIds)
+            {
+                _requiredIngredientService.Create(new RequiredIngredient() {IngredientId = newIngredientId, PizzaId = pizza.Id});
+            }
+            
+            pizza.Update(pizzaDto);
+            _pizzaService.Update(pizza);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PizzaExists(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id)
         {
-            return _context.Pizzas.Any(e => e.Id == id);
+            if (id < 1 || id is null) return BadRequest();
+            
+            _pizzaService.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
