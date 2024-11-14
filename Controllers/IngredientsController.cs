@@ -60,16 +60,17 @@ namespace PizzaOrdering.Controllers
             
             return View(ingredient);
         }
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Update(Ingredient? ingredient)
         {
+          System.Console.WriteLine("asldkjf;asdf");
             if (ingredient is null) return BadRequest();
         
             _ingredientService.Update(ingredient);
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete("[action]")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();

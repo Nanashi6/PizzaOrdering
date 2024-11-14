@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="544deda8-7777-498c-bfdb-e6105bf0bf26" name="Changes" comment="" />
+    <list default="true" id="544deda8-7777-498c-bfdb-e6105bf0bf26" name="Changes" comment="Присутствуют траблы с контроллерами">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PizzaOrdering/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PizzaOrdering/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,18 +46,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "BusinessLogic",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;BusinessLogic&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PizzaOrdering: IIS Express">
     <configuration name="PizzaOrdering: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/PizzaOrdering.csproj" />
@@ -113,6 +115,7 @@
       <updated>1731426483101</updated>
       <workItem from="1731426485695" duration="2576000" />
       <workItem from="1731430326531" duration="143000" />
+      <workItem from="1731481599092" duration="7019000" />
     </task>
     <task id="LOCAL-00001" summary="Созданы модели базы данных">
       <option name="closed" value="true" />
@@ -146,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731430411237</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Присутствуют траблы с контроллерами">
+      <option name="closed" value="true" />
+      <created>1731515910559</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1731515910559</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,6 +171,7 @@
     <MESSAGE value="Созданы сервисы и DTO для объектов базы данных" />
     <MESSAGE value="Дежурный коммит" />
     <MESSAGE value="Ещё какие-то изменения настроек проекта" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ещё какие-то изменения настроек проекта" />
+    <MESSAGE value="Присутствуют траблы с контроллерами" />
+    <option name="LAST_COMMIT_MESSAGE" value="Присутствуют траблы с контроллерами" />
   </component>
 </project>

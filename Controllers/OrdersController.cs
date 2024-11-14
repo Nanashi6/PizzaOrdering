@@ -79,16 +79,16 @@ namespace PizzaOrdering.Controllers
             
             Order newOrder = new()
             {
-                PizzasCount = cart.cartItems.Sum(p => p.Quantity),
+                PizzasCount = cart.pizzas.Sum(p => p.Quantity),
                 UserId = _userManager.GetUserId(User),
                 Address = order.Address,
                 DeliveryDate = order.DeliveryDate,
                 OrderDate = order.OrderDate,
-                Price = cart.cartItems.Sum(p => p.Pizza.Price)
+                Price = cart.pizzas.Sum(p => p.Pizza.Price)
             };
             _orderService.Create(newOrder);
             
-            await CreatePizzasRequired(cart.cartItems, newOrder.Id);
+            await CreatePizzasRequired(cart.pizzas, newOrder.Id);
             
             cart.Clear();
             SaveCart("cart", cart);
@@ -113,7 +113,7 @@ namespace PizzaOrdering.Controllers
         [NonAction]
         private bool HasIngredients(Cart? cart)
         {
-            foreach (var cartItem in cart.cartItems)
+            foreach (var cartItem in cart.pizzas)
             {
                 PizzaInfoViewModel pizza = cartItem.Pizza;
                 int quantity = cartItem.Quantity;

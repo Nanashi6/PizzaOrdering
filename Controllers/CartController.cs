@@ -8,7 +8,7 @@ using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
-    public class CartController : Controller // TODO: СДЕЛАТЬ НОРМАЛЬНУЮ АДРЕСАЦИЮ
+    public class CartController : Controller
     {
         private readonly ICRUDService<Pizza> _pizzasService;
         private readonly UserManager<User> _userManager;
@@ -19,14 +19,14 @@ namespace PizzaOrdering.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetCart()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return Ok(await GetUserCart());
+            return View((await GetUserCart()).pizzas);
         }
         
-        [HttpPost("[action]")]
-        public async Task<ActionResult> AddPizzaToCart(int pizzaId, int quantity)
+        [HttpGet]
+        public async Task<ActionResult> AddPizzaToCart(int pizzaId, int quantity, string returnUrl)
         {
             if (pizzaId < 1 || quantity < 1) return BadRequest();
             Pizza? pizza = _pizzasService.Read(pizzaId);
@@ -45,10 +45,11 @@ namespace PizzaOrdering.Controllers
             
             cart.AddItem(pizzaInfo, quantity);
             SaveCart("cart", cart);
-            return Ok();
+            
+            return Redirect(returnUrl ?? "/");
         }
 
-        [HttpPost("[action]")]
+        [HttpGet]
         public async Task<ActionResult> UpdatePizzaQuantityOnCart(int pizzaId, int newQuantity)
         {
             if (pizzaId < 1 || newQuantity < 1) return BadRequest();
@@ -57,7 +58,7 @@ namespace PizzaOrdering.Controllers
             if (pizza is null) return NotFound("Pizza not found"); 
             Cart cart = await GetUserCart();
 
-            CartItem pizzaOnCart = cart.cartItems.FirstOrDefault(e => e.Pizza.Id == pizzaId);
+            CartItem pizzaOnCart = cart.pizzas.FirstOrDefault(e => e.Pizza.Id == pizzaId);
             
             if(pizzaOnCart is null) return BadRequest("Pizza not found on Cart");
             
@@ -66,7 +67,7 @@ namespace PizzaOrdering.Controllers
             return Ok();
         }
         
-        [HttpPost("[action]")]
+        [HttpGet]
         public async Task<ActionResult> RemovePizzaFromCart(int pizzaId)
         {
             if (pizzaId < 1) return BadRequest();
@@ -76,7 +77,8 @@ namespace PizzaOrdering.Controllers
             Cart cart = await GetUserCart();
             cart.RemoveItem(pizza);
             SaveCart("cart", cart);
-            return Ok();
+            
+            return RedirectToAction(nameof(Index));
         }
         
         [NonAction]
