@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="IngredientIds" class="control-label"></label>
-                <select asp-for="IngredientIds" class="form-control" multiple>
+                <select asp-for="IngredientIds" class="form-control" required multiple>
                   @foreach (var ingredient in ingredients) {
                     <option value="@ingredient.Id">@ingredient.Name</option>
                   }
