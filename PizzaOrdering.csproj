@@ -20,4 +20,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Users\Create.cshtml" />
+    <AdditionalFiles Include="Views\Users\Get.cshtml" />
+    <AdditionalFiles Include="Views\Users\Index.cshtml" />
+    <AdditionalFiles Include="Views\Users\Update.cshtml" />
+  </ItemGroup>
+
 </Project>

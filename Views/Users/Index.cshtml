@@ -1,7 +1,7 @@
-﻿@model IEnumerable<PizzaOrdering.Models.PizzaInfoViewModel>
+﻿@model IEnumerable<PizzaOrdering.DataLayer.Models.User>
 
 @{
-    ViewData["Title"] = "Pizza";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -16,13 +16,11 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Size)
+                @Html.DisplayNameFor(model => model.Surname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>Ingredients</th>
-            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -33,23 +31,15 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Size)
+                @Html.DisplayFor(modelItem => item.Surname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-              @foreach (var ingredient in item.Ingredients) {
-                @ingredient.Name @if (ingredient != item.Ingredients.Last()) { <text>&nbsp;</text> }
-              }
+                @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
                 <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Get" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-            <td>
-                <a asp-action="AddPizzaToCart" asp-route-returnUrl="@Context.Request.Path" asp-route-quantity="1" asp-route-pizzaId="@item.Id" asp-controller="Cart">Add to cart</a>
             </td>
         </tr>
 }

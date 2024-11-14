@@ -5,15 +5,15 @@ namespace PizzaOrdering.LogicLayer;
 
 public class Cart
 {
-    public List<CartItem> cartItems { get; init; } = new List<CartItem>();
+    public List<CartItem> pizzas { get; init; } = new List<CartItem>();
 
     public void AddItem(PizzaInfoViewModel pizza, int quantity)
     {
-        CartItem? line = cartItems.FirstOrDefault(g => g.Pizza.Id == pizza.Id);
+        CartItem? line = pizzas.FirstOrDefault(g => g.Pizza.Id == pizza.Id);
 
         if (line == null)
         {
-            cartItems.Add(new CartItem
+            pizzas.Add(new CartItem
             {
                 Pizza = pizza,
                 Quantity = quantity
@@ -27,12 +27,12 @@ public class Cart
 
     public void RemoveItem(Pizza pizza)
     {
-        cartItems.RemoveAll(l => l.Pizza.Id == pizza.Id);
+        pizzas.RemoveAll(l => l.Pizza.Id == pizza.Id);
     }
 
     public void Clear()
     {
-        cartItems.Clear();
+        pizzas.Clear();
     }
 }
 
