@@ -14,10 +14,14 @@ namespace PizzaOrdering.Controllers
     public class RequiredIngredientsController : Controller
     {
         private ICRUDService<RequiredIngredient> _requiredIngredientService;
+        private ICRUDService<Ingredient> _ingredientService;
+        private ICRUDService<Pizza> _pizzasService;
 
-        public RequiredIngredientsController(ICRUDService<RequiredIngredient> requiredIngredientService)
+        public RequiredIngredientsController(ICRUDService<RequiredIngredient> requiredIngredientService, ICRUDService<Ingredient> ingredientService, ICRUDService<Pizza> pizzasService)
         {
             _requiredIngredientService = requiredIngredientService;
+            _ingredientService = ingredientService;
+            _pizzasService = pizzasService;
         }
 
         [HttpGet]
@@ -29,7 +33,7 @@ namespace PizzaOrdering.Controllers
         
             if (requiredIngredient is null) return NotFound();
         
-            return Ok(requiredIngredient);
+            return View(requiredIngredient);
         }
 
         [HttpGet]
@@ -41,6 +45,8 @@ namespace PizzaOrdering.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            ViewBag.Ingredients = _ingredientService.ReadAll();
+            ViewBag.Pizzas = _pizzasService.ReadAll();
             return View();
         }
         [HttpPost]
@@ -58,9 +64,12 @@ namespace PizzaOrdering.Controllers
             if (id < 1 || id is null) return BadRequest();
             RequiredIngredient requiredIngredient = _requiredIngredientService.Read(id);
             
+            ViewBag.Ingredients = _ingredientService.ReadAll();
+            ViewBag.Pizzas = _pizzasService.ReadAll();
+            
             return View(requiredIngredient);
         }
-        [HttpPut("[action]")]
+        [HttpPost]
         public async Task<IActionResult> Update(RequiredIngredient? requiredIngredient)
         {
             if (requiredIngredient is null) return BadRequest();
@@ -69,7 +78,7 @@ namespace PizzaOrdering.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete("[action]")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();

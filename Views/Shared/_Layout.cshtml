@@ -43,16 +43,26 @@
                           </a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) {
-                          <li>
-                            <a 
-                              class="nav-link text-dark" 
-                              asp-area="" 
-                              asp-controller="Ingredients" 
-                              asp-action="Index"
-                            >
-                              Ingredients
-                            </a>
-                          </li>
+                            <li>
+                                <a 
+                                    class="nav-link text-dark" 
+                                    asp-area="" 
+                                    asp-controller="Ingredients" 
+                                    asp-action="Index"
+                                >
+                                    Ingredients
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    class="nav-link text-dark"
+                                    asp-area=""
+                                    asp-controller="RequiredIngredients"
+                                    asp-action="Index"
+                                >
+                                    RequiredIngredients
+                                </a>
+                            </li>
                         } 
                     </ul>
                     <partial name="_LoginPartial" />
