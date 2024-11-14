@@ -16,9 +16,12 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<IdentityRole>> Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_roleService.ReadAll());
+            var result = _roleService.ReadAll();
+            ViewBag.Roles = result;
+
+            return View();
         }
 
         [HttpGet]
