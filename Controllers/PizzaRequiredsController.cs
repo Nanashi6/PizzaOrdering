@@ -13,18 +13,22 @@ using PizzaOrdering.LogicLayer.Services;
 
 namespace PizzaOrdering.Controllers
 {
+    [Route("[controller]")]
     public class PizzaRequiredsController : Controller
     {
         private readonly ICRUDService<PizzaRequired> _pizzaRequiredService;
         private readonly OrderService _orderService;
+        private readonly ICRUDService<Pizza> _pizzaService;
 
-        public PizzaRequiredsController(ICRUDService<PizzaRequired> pizzaRequiredService, ICRUDService<Order> orderService)
+        public PizzaRequiredsController(ICRUDService<PizzaRequired> pizzaRequiredService,
+            ICRUDService<Order> orderService, ICRUDService<Pizza> pizzaService)
         {
             _pizzaRequiredService = pizzaRequiredService;
             _orderService = (OrderService)orderService;
+            _pizzaService = pizzaService;
         }
     
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Get(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
@@ -35,18 +39,24 @@ namespace PizzaOrdering.Controllers
             return View(pizzaRequired);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Index()
         {
             return View(_pizzaRequiredService.ReadAll());
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Create()
         {
+            var pizzas = _pizzaService.ReadAll();
+            var orders = _orderService.ReadAll();
+
+            ViewBag.Pizzas = pizzas;
+            ViewBag.Orders = orders;
+
             return View();
         }
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Create(PizzaRequired? pizzaRequired)
         {
             if (pizzaRequired is null) return BadRequest();
@@ -57,15 +67,21 @@ namespace PizzaOrdering.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
             PizzaRequired pizzaRequired = _pizzaRequiredService.Read(id);
+
+            var pizzas = _pizzaService.ReadAll();
+            var orders = _orderService.ReadAll();
+
+            ViewBag.Pizzas = pizzas;
+            ViewBag.Orders = orders;
             
             return View(pizzaRequired);
         }
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(PizzaRequired? pizzaRequired)
         {
             if (pizzaRequired is null) return BadRequest();
@@ -74,7 +90,7 @@ namespace PizzaOrdering.Controllers
             return RedirectToAction(nameof(Index));
         }
     
-        [HttpDelete("[action]")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
