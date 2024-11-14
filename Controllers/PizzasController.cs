@@ -149,7 +149,7 @@ namespace PizzaOrdering.Controllers
             if (pizza is null) return NotFound("Pizza not found");
             
             IEnumerable<int> exceptsIngredientsIds = 
-                pizza.RequiredIngredients.Select(ri => ri.Ingredient.Id).Except(pizzaDto.IngredientIds);
+                pizza.RequiredIngredients.Where(ri => !pizzaDto.IngredientIds.Contains(ri.IngredientId)).Select(ri => ri.Id);
             IEnumerable<int> newIngredientsIds =
                 pizzaDto.IngredientIds.Except(pizza.RequiredIngredients.Select(ri => ri.Ingredient.Id));
             
@@ -157,9 +157,7 @@ namespace PizzaOrdering.Controllers
                 _requiredIngredientService.Delete(existingIngredientId);
 
             foreach (int newIngredientId in newIngredientsIds)
-            {
                 _requiredIngredientService.Create(new RequiredIngredient() {IngredientId = newIngredientId, PizzaId = pizza.Id});
-            }
             
             pizza.Update(pizzaDto);
             _pizzaService.Update(pizza);
