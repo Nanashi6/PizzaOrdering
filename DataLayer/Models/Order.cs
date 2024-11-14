@@ -28,6 +28,17 @@ public class Order : ITable
     [JsonIgnore] 
     public virtual User? User { get; set; }
 
+    public static explicit operator CreateOrderViewModel(Order order) {
+      CreateOrderViewModel result = new(){
+        Id = order.Id,
+        Address = order.Address,
+        OrderDate = order.OrderDate,
+        DeliveryDate = order.OrderDate,
+      };
+
+      return result;
+    }
+
     public void Update(CreateOrderViewModel orderDto)
     {
         OrderDate = orderDto.OrderDate;
