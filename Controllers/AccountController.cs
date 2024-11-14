@@ -14,7 +14,10 @@ namespace PizzaOrdering.Controllers
         private readonly SignInManager<User?> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(PizzeriaContext context, UserManager<User?> userManager, SignInManager<User?> signInManager, IHttpContextAccessor httpContextAccessor)
+        public AccountController(PizzeriaContext context, 
+                                UserManager<User?> userManager, 
+                                SignInManager<User?> signInManager,
+                                IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _userManager = userManager;
@@ -80,7 +83,7 @@ namespace PizzaOrdering.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Home");
         }
         
         public async Task<IActionResult> GetUserInfo()
