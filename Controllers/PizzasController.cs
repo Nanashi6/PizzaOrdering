@@ -12,15 +12,21 @@ using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
+    [Route("[controller]")]
     public class PizzasController : Controller
     {
         private ICRUDService<Pizza> _pizzaService;
         private readonly ICRUDService<RequiredIngredient> _requiredIngredientService;
+        private readonly ICRUDService<Ingredient> _crudIngredient;
         
-        public PizzasController(ICRUDService<Pizza> pizzaService, ICRUDService<RequiredIngredient> requiredIngredientService)
+        public PizzasController(
+            ICRUDService<Pizza> pizzaService, 
+            ICRUDService<RequiredIngredient> requiredIngredientService,
+            ICRUDService<Ingredient> crudIngredient)
         {
             _pizzaService = pizzaService;
             _requiredIngredientService = requiredIngredientService;
+            _crudIngredient = crudIngredient;
         }
 
         [HttpGet("[action]/{id}")]
@@ -82,9 +88,12 @@ namespace PizzaOrdering.Controllers
             return View(pizzaInfoDtos);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Create()
         {
+            var ingredients = _crudIngredient.ReadAll();
+            ViewBag.Ingredients = ingredients;
+            
             return View();
         }
         [HttpPost("[action]")]
@@ -99,7 +108,7 @@ namespace PizzaOrdering.Controllers
                 Size = pizza.Size,
             };
             _pizzaService.Create(newPizza);
-            
+
             IEnumerable<RequiredIngredient> requiredIngredients = pizza.
                 IngredientIds.Select(ingredientId => new RequiredIngredient
                 {
@@ -121,15 +130,18 @@ namespace PizzaOrdering.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
-            Pizza pizza = _pizzaService.Read(id);
+            CreatePizzaViewModel pizza = (CreatePizzaViewModel)_pizzaService.Read(id);
+
+            var ingredients = _crudIngredient.ReadAll();
+            ViewBag.Ingredients = ingredients;
             
             return View(pizza);
         }
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(CreatePizzaViewModel? pizzaDto)
         {
             if (pizzaDto is null) return BadRequest();
@@ -154,7 +166,7 @@ namespace PizzaOrdering.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();

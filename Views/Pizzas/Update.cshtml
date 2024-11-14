@@ -1,7 +1,9 @@
-﻿@model PizzaOrdering.DataLayer.Models.Pizza
+﻿@model PizzaOrdering.Models.CreatePizzaViewModel
+@using PizzaOrdering.DataLayer.Models
 
 @{
     ViewData["Title"] = "Edit";
+    var ingredients = ViewBag.Ingredients as IEnumerable<Ingredient>;
 }
 
 <h1>Edit</h1>
@@ -10,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -27,6 +29,19 @@
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientIds" class="control-label"></label>
+                <select asp-for="IngredientIds" class="form-control" multiple>
+                  @foreach (var ingredient in ingredients) {
+                    <option  
+                      value="@ingredient.Id"
+                    >
+                      @ingredient.Name
+                    </option>
+                  }
+                </select>
+                <span asp-validation-for="IngredientIds" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

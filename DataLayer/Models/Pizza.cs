@@ -19,6 +19,18 @@ public class Pizza : ITable
     [JsonIgnore]
     public virtual IEnumerable<RequiredIngredient>? RequiredIngredients { get; set; }
 
+    public static explicit operator CreatePizzaViewModel(Pizza pizza) {
+      CreatePizzaViewModel result = new();
+      
+      result.Id = pizza.Id;
+      result.Name = pizza.Name;
+      result.Size = pizza.Size;
+      result.Price = pizza.Price;
+      result.IngredientIds = pizza.RequiredIngredients?.Select(i => i.Ingredient.Id).ToArray() ?? [];
+
+      return result;
+    }
+
     public void Update(CreatePizzaViewModel pizzaDto)
     {
         Name = pizzaDto.Name;

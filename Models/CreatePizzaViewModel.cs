@@ -14,5 +14,5 @@ public class CreatePizzaViewModel
     public double Price { get; set; }
     
     [Required]
-    public IEnumerable<int> IngredientIds { get; set; } = Enumerable.Empty<int>();
+    public int[] IngredientIds { get; set; } = [];
 }

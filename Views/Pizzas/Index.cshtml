@@ -1,7 +1,7 @@
-﻿@model IEnumerable<PizzaOrdering.DataLayer.Models.Pizza>
+﻿@model IEnumerable<PizzaOrdering.Models.PizzaInfoViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pizza";
 }
 
 <h1>Index</h1>
@@ -21,6 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
+            <th>Ingredients</th>
             <th></th>
         </tr>
     </thead>
@@ -37,8 +38,13 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+              @foreach (var ingredient in item.Ingredients) {
+                @ingredient.Name @if (ingredient != item.Ingredients.Last()) { <text>&nbsp;</text> }
+              }
+            </td>
+            <td>
+                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Get" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
