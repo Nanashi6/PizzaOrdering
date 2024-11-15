@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<PizzaOrdering.Models.PizzaInfoViewModel>
+@using PizzaOrdering.DataLayer.Models
 
 @{
     ViewData["Title"] = "Pizza";
+    var ingredients = ViewBag.Ingredients as IEnumerable<Ingredient>;
 }
 
 <h1>Index</h1>
@@ -9,6 +11,33 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form class="form-inline" asp-action="Filter" method="Get">
+  <input 
+    placeholder="Введите максимальную цену" 
+    type="number" 
+    name="maxPrice" 
+    class="col-sm-3"
+  />
+  <input 
+    placeholder="Введите минимальную цену" 
+    type="number" 
+    name="minPrice" 
+    class="col-sm-3"
+  />
+  <input 
+    placeholder="Введите размер" 
+    type="number" 
+    name="size" 
+  />
+  <select size="2" name="ingredientIds" multiple>
+    @foreach (var ingredient in ingredients) {
+      <option value="@ingredient.Id">@ingredient.Name</option>
+    } 
+  </select>
+  <input type="submit" value="Search" class="btn btn-primary"> 
+</form>
+
 <table class="table">
     <thead>
         <tr>
