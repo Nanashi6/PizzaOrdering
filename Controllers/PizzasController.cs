@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,7 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Create()
         {
             var ingredients = _crudIngredient.ReadAll();
@@ -97,6 +99,7 @@ namespace PizzaOrdering.Controllers
             return View();
         }
         [HttpPost("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Create(CreatePizzaViewModel? pizza)
         {
             if (pizza is null) return BadRequest();
@@ -131,6 +134,7 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
@@ -142,6 +146,7 @@ namespace PizzaOrdering.Controllers
             return View(pizza);
         }
         [HttpPost("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update(CreatePizzaViewModel? pizzaDto)
         {
             if (pizzaDto is null) return BadRequest();
@@ -165,6 +170,7 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();

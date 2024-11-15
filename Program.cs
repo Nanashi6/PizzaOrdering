@@ -48,9 +48,6 @@ namespace PizzaOrdering
 
             var app = builder.Build();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-            
             app.UseSession();
             
             // Configure the HTTP request pipeline.
@@ -69,6 +66,9 @@ namespace PizzaOrdering
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

@@ -25,6 +25,9 @@ namespace PizzaOrdering.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public IActionResult AccessDenied(string returnUrl) 
+          => RedirectToAction("Index", "Home");
+
         public async Task<IActionResult> Login()
         {
             return View();

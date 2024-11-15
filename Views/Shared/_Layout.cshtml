@@ -46,16 +46,6 @@
                           <a 
                             class="nav-link text-dark" 
                             asp-area="" 
-                            asp-controller="PizzaRequireds" 
-                            asp-action="Index"
-                          >
-                            PizzaRequireds
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            class="nav-link text-dark" 
-                            asp-area="" 
                             asp-controller="Orders" 
                             asp-action="Index"
                           >
@@ -73,6 +63,16 @@
                           </a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) {
+                            <li>
+                              <a 
+                                class="nav-link text-dark" 
+                                asp-area="" 
+                                asp-controller="PizzaRequireds" 
+                                asp-action="Index"
+                              >
+                                PizzaRequireds
+                              </a>
+                            </li>
                             <li>
                                 <a 
                                     class="nav-link text-dark" 

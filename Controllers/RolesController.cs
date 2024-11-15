@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PizzaOrdering.LogicLayer.Interfaces;
@@ -6,6 +7,7 @@ using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class RolesController : Controller
     {
         private readonly IRoleService<IdentityRole> _roleService;
