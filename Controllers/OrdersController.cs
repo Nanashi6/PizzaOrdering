@@ -153,6 +153,15 @@ namespace PizzaOrdering.Controllers
 
         [HttpGet("[action]")]
         [Authorize(Roles="Admin")]
+        public async Task<IActionResult> GetStatistic() {
+          var orders = _orderService.ReadAll();
+          ViewBag.Orders = orders;
+
+          return View(orders);
+        }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
