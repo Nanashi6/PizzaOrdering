@@ -17,6 +17,7 @@ using PizzaOrdering.Models;
 
 namespace PizzaOrdering.Controllers
 {
+    [Route("[controller]")]
     public class OrdersController : Controller
     { 
         private ICRUDService<Order> _orderService;
@@ -35,7 +36,7 @@ namespace PizzaOrdering.Controllers
             _ingredientService = (IngredientService)ingredientService;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Get(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
@@ -47,13 +48,13 @@ namespace PizzaOrdering.Controllers
             return View(order);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Index()
         {
             return View(_orderService.ReadAll());
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> UserOrders()
         {
             User user = await _userManager.GetUserAsync(User);
@@ -63,12 +64,12 @@ namespace PizzaOrdering.Controllers
             return View(orders);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Create()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Create(CreateOrderViewModel? order)
         {
             if (order is null) return BadRequest();
@@ -127,15 +128,15 @@ namespace PizzaOrdering.Controllers
             return true;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
-            Order order = _orderService.Read(id);
+            CreateOrderViewModel order = (CreateOrderViewModel)_orderService.Read(id);
             
             return View(order);
         }
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(CreateOrderViewModel? orderDto)
         {
             if (orderDto is null) return BadRequest();
@@ -148,7 +149,7 @@ namespace PizzaOrdering.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete("[action]")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
