@@ -75,11 +75,6 @@ namespace PizzaOrdering.Controllers
         public async Task<IActionResult> Filter(double? maxPrice = null, double minPrice = 0, 
             int? size = null, IEnumerable<int> ingredientIds = null)
         {
-            System.Console.WriteLine("asdf");
-            foreach (var a in ingredientIds) {
-              System.Console.WriteLine(a);
-            }
-
             IEnumerable<Pizza> pizzas = _pizzaService.ReadAll().Where(p => p.Price >= minPrice);
             if (maxPrice is not null) pizzas = pizzas.Where(p => p.Price <= maxPrice);
             if (size is not null) pizzas = pizzas.Where(p => p.Size == size);
