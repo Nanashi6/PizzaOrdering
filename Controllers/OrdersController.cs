@@ -129,6 +129,7 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update(int? id)
         {
             if (id < 1 || id is null) return BadRequest();
@@ -137,6 +138,7 @@ namespace PizzaOrdering.Controllers
             return View(order);
         }
         [HttpPost("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update(CreateOrderViewModel? orderDto)
         {
             if (orderDto is null) return BadRequest();
@@ -150,6 +152,7 @@ namespace PizzaOrdering.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id < 1 || id is null) return BadRequest();

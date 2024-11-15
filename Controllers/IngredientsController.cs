@@ -12,6 +12,7 @@ using PizzaOrdering.LogicLayer.Interfaces;
 
 namespace PizzaOrdering.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class IngredientsController : Controller
     {
         private ICRUDService<Ingredient> _ingredientService;

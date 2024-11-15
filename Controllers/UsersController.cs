@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaOrdering.DataLayer.Models;
 using PizzaOrdering.LogicLayer.Interfaces;
 
 namespace PizzaOrdering.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class UsersController : Controller
     {
         private ICRUDService<User> _userService;

@@ -14,6 +14,7 @@ using PizzaOrdering.LogicLayer.Services;
 namespace PizzaOrdering.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles="Admin")]
     public class PizzaRequiredsController : Controller
     {
         private readonly ICRUDService<PizzaRequired> _pizzaRequiredService;
