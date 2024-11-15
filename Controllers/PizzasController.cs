@@ -65,17 +65,31 @@ namespace PizzaOrdering.Controllers
                 Ingredients = pizza.RequiredIngredients.Select(ri => ri.Ingredient)
             });
             
+            var ingredients = _crudIngredient.ReadAll();
+            ViewBag.Ingredients = ingredients;
+            
             return View(pizzaInfoDtos);
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Filter(double? maxPrice = null, double minPrice = 0, int? size = null/*, IEnumerable<int> ingredientIds = null*/)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Filter(double? maxPrice = null, double minPrice = 0, 
+            int? size = null, IEnumerable<int> ingredientIds = null)
         {
+            System.Console.WriteLine("asdf");
+            foreach (var a in ingredientIds) {
+              System.Console.WriteLine(a);
+            }
+
             IEnumerable<Pizza> pizzas = _pizzaService.ReadAll().Where(p => p.Price >= minPrice);
             if (maxPrice is not null) pizzas = pizzas.Where(p => p.Price <= maxPrice);
             if (size is not null) pizzas = pizzas.Where(p => p.Size == size);
-            // if (ingredientIds is not null)
-            //     pizzas = pizzas.Where(pizza => pizza.RequiredIngredients.All(ri => ingredientIds.Contains(ri.Ingredient.Id)));
+            if (ingredientIds is not null) {
+              pizzas = pizzas.Where(pizza => ingredientIds
+                .All(id => pizza.RequiredIngredients
+                  .Any(x => x.Ingredient.Id == id)
+                )
+              );
+            }
             
             IEnumerable<PizzaInfoViewModel> pizzaInfoDtos = pizzas.Select(pizza => new PizzaInfoViewModel()
             {
@@ -85,8 +99,11 @@ namespace PizzaOrdering.Controllers
                 Price = pizza.Price,
                 Ingredients = pizza.RequiredIngredients.Select(ri => ri.Ingredient)
             });
+
+            var ingredients = _crudIngredient.ReadAll();
+            ViewBag.Ingredients = ingredients;
             
-            return View(pizzaInfoDtos);
+            return View("Index", pizzaInfoDtos);
         }
 
         [HttpGet("[action]")]
