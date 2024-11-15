@@ -72,29 +72,37 @@ namespace PizzaOrdering.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Create(CreateOrderViewModel? order)
         {
-            if (order is null) return BadRequest();
-            
-            Cart? cart = await GetUserCart();
-            if (cart is null) return BadRequest("Cart is null");
-            if (!HasIngredients(cart)) return BadRequest("Pizzeria don't have ingredients");      
-            
-            Order newOrder = new()
+            if (ModelState.IsValid)
             {
-                PizzasCount = cart.pizzas.Sum(p => p.Quantity),
-                UserId = _userManager.GetUserId(User),
-                Address = order.Address,
-                DeliveryDate = order.DeliveryDate,
-                OrderDate = order.OrderDate,
-                Price = cart.pizzas.Sum(p => p.Pizza.Price)
-            };
-            _orderService.Create(newOrder);
+                if (order is null) return BadRequest();
             
-            await CreatePizzasRequired(cart.pizzas, newOrder.Id);
+                Cart? cart = await GetUserCart();
+                if (cart is null) return BadRequest("Cart is null");
+                if (!HasIngredients(cart))
+                {
+                    ModelState.AddModelError("", "Pizzeria don't have ingredients");
+                    return View();
+                }      
             
-            cart.Clear();
-            SaveCart("cart", cart);
+                Order newOrder = new()
+                {
+                    PizzasCount = cart.pizzas.Sum(p => p.Quantity),
+                    UserId = _userManager.GetUserId(User),
+                    Address = order.Address,
+                    DeliveryDate = order.DeliveryDate,
+                    OrderDate = DateTime.Now,
+                    Price = cart.pizzas.Sum(p => p.Pizza.Price)
+                };
+                _orderService.Create(newOrder);
             
-            return RedirectToAction(nameof(Index));
+                await CreatePizzasRequired(cart.pizzas, newOrder.Id);
+            
+                cart.Clear();
+                SaveCart("cart", cart);
+            
+                return RedirectToAction(nameof(Index));   
+            }
+            return View(order);
         }
 
         [NonAction]
