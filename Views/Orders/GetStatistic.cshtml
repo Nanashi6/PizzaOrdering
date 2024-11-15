@@ -1,0 +1,40 @@
+@model IEnumerable<PizzaOrdering.DataLayer.Models.Order>
+
+@{
+  ViewData["Title"] = "Statistic";
+}
+
+<h1>Statistic</h1>
+
+<p>
+  <a asp-action="Index">To orders list</a>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th> @Html.DisplayNameFor(model => model.Address) </th>
+      <th> @Html.DisplayNameFor(model => model.OrderDate) </th>
+      <th> @Html.DisplayNameFor(model => model.DeliveryDate) </th>
+      <th> @Html.DisplayNameFor(model => model.Price) </th>
+      <th> Pizzas </th>
+    </tr>  
+  </thead> 
+  <tbody>
+  @foreach (var order in Model) {
+    <tr>
+      <th>@Html.DisplayFor(modelItem => order.Address)</th>
+      <th>@Html.DisplayFor(modelItem => order.OrderDate)</th>
+      <th>@Html.DisplayFor(modelItem => order.DeliveryDate)</th>
+      <th>@Html.DisplayFor(modelItem => order.Price)</th>
+      <th>
+        <ul>
+        @foreach (var pizzaReq in order.Pizzas) {
+          <li>@pizzaReq.Pizza.Name<text>&nbsp;</text></li>
+        }
+        </ul>
+      </th>
+    </tr> 
+  }
+  </tbody>
+</table>
