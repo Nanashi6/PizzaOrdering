@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using PizzaOrdering.DataLayer.Interfaces;
+using PizzaOrdering.Infrastracture.Attributes;
 using PizzaOrdering.Models;
 
 namespace PizzaOrdering.DataLayer.Models;
@@ -17,6 +18,7 @@ public class Order : ITable
     [Column]
     public DateTime OrderDate { get; set; }
     [Column]
+    [CheckDate("OrderDate")]
     public DateTime DeliveryDate { get; set; }
     [Column]
     public double Price { get; set; }
@@ -32,7 +34,6 @@ public class Order : ITable
       CreateOrderViewModel result = new(){
         Id = order.Id,
         Address = order.Address,
-        OrderDate = order.OrderDate,
         DeliveryDate = order.OrderDate,
       };
 
@@ -41,7 +42,6 @@ public class Order : ITable
 
     public void Update(CreateOrderViewModel orderDto)
     {
-        OrderDate = orderDto.OrderDate;
         DeliveryDate = orderDto.DeliveryDate;
         Address = orderDto.Address;
     }

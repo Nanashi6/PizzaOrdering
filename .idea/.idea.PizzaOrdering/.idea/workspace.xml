@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="544deda8-7777-498c-bfdb-e6105bf0bf26" name="Changes" comment="Присутствуют траблы с контроллерами">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PizzaOrdering/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PizzaOrdering/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="544deda8-7777-498c-bfdb-e6105bf0bf26" name="Changes" comment="Основной функционал корзины пофикшен" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +18,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="denchickVlasiet" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -37,6 +35,9 @@
     &quot;accountId&quot;: &quot;83a90391-2a0c-4d8f-bf02-abd61ad4de6f&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/My Data/University/Дополнительный стаф/PizzaOrdering/Controllers/PizzasController.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -46,18 +47,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;BusinessLogic&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.PizzaOrdering: IIS Express.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "YuraFixit",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PizzaOrdering: IIS Express">
     <configuration name="PizzaOrdering: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/PizzaOrdering.csproj" />
@@ -115,7 +117,7 @@
       <updated>1731426483101</updated>
       <workItem from="1731426485695" duration="2576000" />
       <workItem from="1731430326531" duration="143000" />
-      <workItem from="1731481599092" duration="7019000" />
+      <workItem from="1731481599092" duration="14410000" />
     </task>
     <task id="LOCAL-00001" summary="Созданы модели базы данных">
       <option name="closed" value="true" />
@@ -157,7 +159,31 @@
       <option name="project" value="LOCAL" />
       <updated>1731515910559</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Исправлен баг логики с невозможностью изменения ингредиентов Пиццы">
+      <option name="closed" value="true" />
+      <created>1731602280952</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731602280952</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Починил контроллер с требуемыми ингредиентами">
+      <option name="closed" value="true" />
+      <created>1731603914434</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731603914434</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Основной функционал корзины пофикшен">
+      <option name="closed" value="true" />
+      <created>1731607658258</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731607658258</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,6 +198,9 @@
     <MESSAGE value="Дежурный коммит" />
     <MESSAGE value="Ещё какие-то изменения настроек проекта" />
     <MESSAGE value="Присутствуют траблы с контроллерами" />
-    <option name="LAST_COMMIT_MESSAGE" value="Присутствуют траблы с контроллерами" />
+    <MESSAGE value="Исправлен баг логики с невозможностью изменения ингредиентов Пиццы" />
+    <MESSAGE value="Починил контроллер с требуемыми ингредиентами" />
+    <MESSAGE value="Основной функционал корзины пофикшен" />
+    <option name="LAST_COMMIT_MESSAGE" value="Основной функционал корзины пофикшен" />
   </component>
 </project>
